@@ -197,27 +197,9 @@ FROM [dbo].[property24_raw_data]
 
 --SECTION 2 – SUM Aggregations (10 Questions)
 --11. What is the total value of all properties combined?
-SELECT [COUNTRY],
-      [CITY],
-      [BEDROOMS],
-      [BATHROOMS],
-      [PARKING],
-      [FLOOR_SIZE],
-      [Monthly_Repayment],
-      [Total_Once_off_Costs],
-      [Min_Gross_Monthly_Income],
-COUNT (PROPERTY_ID),
-SUM(PROPERTY_PRICE)
+SELECT COUNT (PROPERTY_ID),
+SUM(CAST(PROPERTY_PRICE AS BIGINT)) AS TotalValueForAllProperties
 FROM [dbo].[property24_raw_data]
-GROUP BY [COUNTRY],
-      [CITY],
-      [BEDROOMS],
-      [BATHROOMS],
-      [PARKING],
-      [FLOOR_SIZE],
-      [Monthly_Repayment],
-      [Total_Once_off_Costs],
-      [Min_Gross_Monthly_Income]
 
 --12. What is the total property value per province?
 SELECT DISTINCT PROVINCE,
@@ -273,3 +255,62 @@ GROUP BY PROPERTY_ID
 SELECT DISTINCT PROVINCE,
 (Min_Gross_Monthly_Income) 
 FROM [dbo].[property24_raw_data]
+
+--SECTION 3 – AVG Aggregations (10 Questions)
+--21. What is the average property price overall?
+SELECT AVG (CAST(PROPERTY_PRICE AS BIGINT))AS AVG_Property_PRICE
+FROM [dbo].[property24_raw_data]
+
+
+--22. What is the average property price per province?
+SELECT DISTINCT PROVINCE,
+AVG (CAST(PROPERTY_PRICE AS BIGINT))AS AVG_Property_PRICE_PER_PROVINCE
+FROM [dbo].[property24_raw_data]
+GROUP BY PROVINCE
+
+--23. What is the average property price per city?
+SELECT DISTINCT CITY,
+AVG (CAST(PROPERTY_PRICE AS BIGINT))AS AVG_Property_PRICE_PER_city
+FROM [dbo].[property24_raw_data]
+GROUP BY CITY
+
+--24. What is the average number of bedrooms per province?
+SELECT DISTINCT PROVINCE,
+AVG (BEDROOMS)AS AVG_number_of_bedroom_Per_province
+FROM [dbo].[property24_raw_data]
+GROUP BY PROVINCE
+
+--25. What is the average number of bathrooms per province?
+SELECT DISTINCT PROVINCE,
+AVG (BATHROOMS)AS AVG_number_of_bathrooms_Per_province
+FROM [dbo].[property24_raw_data]
+GROUP BY PROVINCE
+
+--26. What is the average floor size per province?
+SELECT DISTINCT PROVINCE,
+AVG (FLOOR_SIZE)AS AVG_number_of_FloorSize_Per_province
+FROM [dbo].[property24_raw_data]
+GROUP BY PROVINCE
+
+--27. What is the average monthly repayment per province?
+SELECT DISTINCT PROVINCE,
+AVG (Monthly_Repayment)AS AVG_monthly_repayment_per_province
+FROM [dbo].[property24_raw_data]
+GROUP BY PROVINCE
+
+--28. What is the average once-off cost per province?
+SELECT DISTINCT PROVINCE,
+AVG (Total_Once_off_Costs)AS AVG_Total_Once_off_Costs_per_province
+FROM [dbo].[property24_raw_data]
+GROUP BY PROVINCE
+
+--29. What is the average minimum gross monthly income per province?
+SELECT DISTINCT PROVINCE,
+AVG (Min_Gross_Monthly_Income)AS AVG_Min_Gross_Monthly_Income_per_province
+FROM [dbo].[property24_raw_data]
+GROUP BY PROVINCE
+
+--30. What is the average property price for properties above R3,000,000?
+SELECT DISTINCT AVG (CAST(PROPERTY_PRICE AS BIGINT))AS AVG_property_price_for_properties_above_3M
+FROM [dbo].[property24_raw_data]
+WHERE PROPERTY_PRICE> 3000000
