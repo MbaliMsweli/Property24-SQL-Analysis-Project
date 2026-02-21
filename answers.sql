@@ -314,3 +314,74 @@ GROUP BY PROVINCE
 SELECT DISTINCT AVG (CAST(PROPERTY_PRICE AS BIGINT))AS AVG_property_price_for_properties_above_3M
 FROM [dbo].[property24_raw_data]
 WHERE PROPERTY_PRICE> 3000000
+
+--SECTION 4 – GROUP BY + Filtering (10 Questions)
+
+--31. Which province has the highest average property price?
+SELECT TOP 1 Province, 
+AVG(CAST(PROPERTY_PRICE AS BIGINT)) AS HighestAveragePropertyPrice
+FROM [dbo].[property24_raw_data]
+GROUP BY PROVINCE
+ORDER BY HighestAveragePropertyPrice DESC;
+
+--32. Which province has the lowest average property price?
+SELECT TOP 1 Province, 
+AVG(CAST(PROPERTY_PRICE AS BIGINT)) AS LowestAveragePropertyPrice
+FROM [dbo].[property24_raw_data]
+GROUP BY PROVINCE
+ORDER BY LowestAveragePropertyPrice ASC;
+
+--33. Which city has the highest total property value?
+SELECT TOP 1 CITY, 
+SUM(CAST(PROPERTY_PRICE AS BIGINT)) AS HighestTotalPropertyValue
+FROM [dbo].[property24_raw_data]
+GROUP BY CITY
+ORDER BY HighestTotalPropertyValue DESC;
+
+--34. Which city has the lowest average property price?
+SELECT TOP 1 CITY, 
+SUM(CAST(PROPERTY_PRICE AS BIGINT)) AS LowestTotalPropertyValue
+FROM [dbo].[property24_raw_data]
+GROUP BY CITY
+ORDER BY LowestTotalPropertyValue ASC;
+--35. How many properties per province are priced above R2,000,000?
+SELECT DISTINCT PROVINCE, COUNT (PROPERTY_ID) as NumberOfPropeties
+FROM [dbo].[property24_raw_data]
+WHERE PROPERTY_PRICE > 2000000
+GROUP BY PROVINCE
+
+--36. What is the average floor size per province for properties above R3,000,000?
+SELECT DISTINCT PROVINCE, 
+AVG (FLOOR_SIZE) as AVGFloorSizePerProvince
+FROM [dbo].[property24_raw_data]
+WHERE PROPERTY_PRICE > 3000000
+GROUP BY PROVINCE
+
+--37. What is the total property value per province for properties with 3 or more bedrooms?
+SELECT DISTINCT PROVINCE, 
+SUM(CAST(PROPERTY_PRICE AS BIGINT)) as TotalPropertyValuePerProvince
+FROM [dbo].[property24_raw_data]
+WHERE BEDROOMS >= 3
+GROUP BY PROVINCE
+
+--38. What is the average monthly repayment per province for properties above R4,000,000?
+SELECT DISTINCT PROVINCE, 
+AVG(CAST(Monthly_Repayment AS BIGINT)) as AVGMonthlyRepayment
+FROM [dbo].[property24_raw_data]
+WHERE PROPERTY_PRICE > 4000000
+GROUP BY PROVINCE
+
+--39. How many properties per city have parking for 2 or more cars?
+SELECT DISTINCT CITY, 
+COUNT(PROPERTY_ID) as TotalPropertyPerCity
+FROM [dbo].[property24_raw_data]
+WHERE PARKING >= 2
+GROUP BY CITY
+
+--40. What is the average minimum gross monthly income per province for properties above
+--R5,000,000?
+SELECT DISTINCT PROVINCE, 
+avg(CAST(Min_Gross_Monthly_Income AS BIGINT)) as AVGMinGrossPerProvince
+FROM [dbo].[property24_raw_data]
+WHERE PROPERTY_PRICE > 5000000
+GROUP BY PROVINCE
