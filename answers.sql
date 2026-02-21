@@ -248,23 +248,27 @@ SELECT DISTINCT PROPERTY_ID,
 SUM (Total_Once_off_Costs) AS total_once_OFF_COST_per_property
 FROM [dbo].[property24_raw_data]
 GROUP BY PROPERTY_ID
+
 --17. What is the total once-off cost per province?
 SELECT DISTINCT PROVINCE,
 SUM (Total_Once_off_Costs) AS total_once_OFF_COST_per_province
 FROM [dbo].[property24_raw_data]
 GROUP BY PROVINCE
+
 --18. What is the total property value for Gauteng?
 SELECT DISTINCT PROVINCE,
 SUM(CAST(PROPERTY_PRICE AS BIGINT)) AS total_property_value_for_gauteng
 FROM [dbo].[property24_raw_data]
 WHERE PROVINCE = 'Gauteng'
 GROUP BY PROVINCE
+
 --19. What is the total property value for properties priced above R4,000,000?
 SELECT DISTINCT PROPERTY_ID,
 SUM(CAST(PROPERTY_PRICE AS BIGINT)) AS total_property_vALUE_over_4M
 FROM [dbo].[property24_raw_data]
 WHERE PROPERTY_PRICE > 4000000
 GROUP BY PROPERTY_ID
+
 --20. What is the total minimum gross monthly income required per province?
 SELECT DISTINCT PROVINCE,
 (Min_Gross_Monthly_Income) 
