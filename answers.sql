@@ -108,32 +108,10 @@ ORDER BY
 
 
 ----What minimum income is typically required for properties priced above R4,000,000?
-SELECT TOP (1) [PROPERTY_ID]
-      ,[COUNTRY]
-      ,[PROVINCE]
-      ,[CITY]
-      ,[PROPERTY_PRICE]
-      ,[BEDROOMS]
-      ,[BATHROOMS]
-      ,[PARKING]
-      ,[FLOOR_SIZE]
-      ,[Monthly_Repayment]
-      ,[Total_Once_off_Costs]
-      ,MIN([Min_Gross_Monthly_Income] ) AS MIN_REQUIRED
+SELECT MIN([Min_Gross_Monthly_Income] ) AS MIN_REQUIRED
   FROM [Property24DB].[dbo].[property24_raw_data]
   WHERE PROPERTY_PRICE > 4000000 
-  GROUP BY  [PROPERTY_ID]
-      ,[COUNTRY]
-      ,[PROVINCE]
-      ,[CITY]
-      ,[PROPERTY_PRICE]
-      ,[BEDROOMS]
-      ,[BATHROOMS]
-      ,[PARKING]
-      ,[FLOOR_SIZE]
-      ,[Monthly_Repayment]
-      ,[Total_Once_off_Costs]
-ORDER BY MIN([Min_Gross_Monthly_Income] ) ASC
+ORDER BY MIN_REQUIRED ASC
 
 ---SECTION 1 – COUNT Aggregations (10 Questions)
 
