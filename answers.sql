@@ -134,3 +134,138 @@ SELECT TOP (1) [PROPERTY_ID]
       ,[Monthly_Repayment]
       ,[Total_Once_off_Costs]
 ORDER BY MIN([Min_Gross_Monthly_Income] ) ASC
+
+---SECTION 1 – COUNT Aggregations (10 Questions)
+
+--1. How many total properties are in the database?
+SELECT COUNT (PROPERTY_ID) as Number_of_Property
+FROM [dbo].[property24_raw_data]
+
+
+--2. How many properties are listed in each province?
+SELECT DISTINCT (PROVINCE),
+COUNT (PROPERTY_ID) AS Property_per_Province
+FROM [dbo].[property24_raw_data]
+GROUP BY PROVINCE
+
+
+---3. How many properties are listed in each city?
+SELECT DISTINCT (CITY),
+COUNT (PROPERTY_ID) AS Property_per_City
+FROM [dbo].[property24_raw_data]
+GROUP BY CITY
+
+
+--4. How many properties have more than 2 bedrooms?
+SELECT COUNT (PROPERTY_ID) AS Property_with_more_than_2_Bedrooms
+FROM [dbo].[property24_raw_data]
+WHERE BEDROOMS > 2
+
+--5. How many properties have 2 or more bathrooms?
+SELECT COUNT (PROPERTY_ID) AS Property_with_2_or_more_Bathrooms
+FROM [dbo].[property24_raw_data]
+WHERE BATHROOMS >= 2
+
+
+--6. How many properties have parking for at least 2 cars?
+SELECT COUNT (PROPERTY_ID) AS Property_with_parking_for_2_cars
+FROM [dbo].[property24_raw_data]
+WHERE PARKING >= 2
+
+--7. How many properties are priced above R3,000,000?
+SELECT COUNT (PROPERTY_ID) AS Property_with_price_above_3M
+FROM [dbo].[property24_raw_data]
+WHERE PROPERTY_PRICE > 3000000
+
+--8. How many properties are in Gauteng?
+SELECT COUNT (PROPERTY_ID) AS Properties_in_Gauteng
+FROM [dbo].[property24_raw_data]
+WHERE PROVINCE = 'GAUTENG'
+
+
+--9. How many properties per province have floor size greater than 200?
+SELECT DISTINCT PROVINCE,
+COUNT (PROPERTY_ID) AS Properties_in_Gauteng_with_FloorSize_GreaterThan_200
+FROM [dbo].[property24_raw_data]
+WHERE FLOOR_SIZE > 200
+GROUP BY PROVINCE
+
+
+--10. How many distinct provinces are in the table?
+SELECT DISTINCT PROVINCE
+FROM [dbo].[property24_raw_data]
+
+--SECTION 2 – SUM Aggregations (10 Questions)
+--11. What is the total value of all properties combined?
+SELECT [COUNTRY],
+      [CITY],
+      [BEDROOMS],
+      [BATHROOMS],
+      [PARKING],
+      [FLOOR_SIZE],
+      [Monthly_Repayment],
+      [Total_Once_off_Costs],
+      [Min_Gross_Monthly_Income],
+COUNT (PROPERTY_ID),
+SUM(PROPERTY_PRICE)
+FROM [dbo].[property24_raw_data]
+GROUP BY [COUNTRY],
+      [CITY],
+      [BEDROOMS],
+      [BATHROOMS],
+      [PARKING],
+      [FLOOR_SIZE],
+      [Monthly_Repayment],
+      [Total_Once_off_Costs],
+      [Min_Gross_Monthly_Income]
+
+--12. What is the total property value per province?
+SELECT DISTINCT PROVINCE,
+SUM (Total_Once_off_Costs) AS Property_value_Per_Province
+FROM [dbo].[property24_raw_data]
+GROUP BY PROVINCE
+
+--13. What is the total property value per city?
+SELECT DISTINCT CITY,
+SUM (Total_Once_off_Costs) AS Property_value_city
+FROM [dbo].[property24_raw_data]
+GROUP BY CITY
+
+--14. What is the total monthly repayment for all properties?
+SELECT PROPERTY_ID,
+SUM (Monthly_Repayment) AS total_monthly_REPAYMENT
+FROM [dbo].[property24_raw_data]
+GROUP BY PROPERTY_ID
+
+--15. What is the total monthly repayment per province?
+SELECT DISTINCT PROVINCE,
+SUM (Monthly_Repayment) AS total_monthly_REPAYMENT_per_province
+FROM [dbo].[property24_raw_data]
+GROUP BY PROVINCE
+
+--16. What is the total once-off cost for all properties?
+SELECT DISTINCT PROPERTY_ID,
+SUM (Total_Once_off_Costs) AS total_once_OFF_COST_per_property
+FROM [dbo].[property24_raw_data]
+GROUP BY PROPERTY_ID
+--17. What is the total once-off cost per province?
+SELECT DISTINCT PROVINCE,
+SUM (Total_Once_off_Costs) AS total_once_OFF_COST_per_province
+FROM [dbo].[property24_raw_data]
+GROUP BY PROVINCE
+--18. What is the total property value for Gauteng?
+SELECT DISTINCT PROVINCE,
+SUM(CAST(PROPERTY_PRICE AS BIGINT)) AS total_property_value_for_gauteng
+FROM [dbo].[property24_raw_data]
+WHERE PROVINCE = 'Gauteng'
+GROUP BY PROVINCE
+--19. What is the total property value for properties priced above R4,000,000?
+SELECT DISTINCT PROPERTY_ID,
+SUM(CAST(PROPERTY_PRICE AS BIGINT)) AS total_property_vALUE_over_4M
+FROM [dbo].[property24_raw_data]
+WHERE PROPERTY_PRICE > 4000000
+GROUP BY PROPERTY_ID
+--20. What is the total minimum gross monthly income required per province?
+SELECT DISTINCT PROVINCE,
+(Min_Gross_Monthly_Income) 
+FROM [dbo].[property24_raw_data]
